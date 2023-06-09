@@ -21,7 +21,7 @@
     "init": "^0.1.2",
     "jsonwebtoken": "^9.0.0",
     "jwtoken": "^0.0.0",
-    "mongoose": "^7.0.3",
+    "mongoose": "^7.2.2",
     "morgan": "^1.10.0",
     "time-ago": "^0.2.1"
   }

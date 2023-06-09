@@ -9,7 +9,6 @@ router.get('/getMyPosts', requireUser, getMyPosts);
 router.get('/getUserPosts', requireUser, getUserPosts);
 router.delete('/', requireUser, deleteMyProfile);
 router.get('/getMyInfo', requireUser, getMyInfo);
-
 router.put('/', requireUser, updateUserProfile);
 router.post('/getUserProfile', requireUser, getUserProfile);
 

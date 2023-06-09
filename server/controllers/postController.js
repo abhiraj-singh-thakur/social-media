@@ -1,14 +1,13 @@
-const Post = require("../models/Post");
-const User = require("../models/User");
-const { success, error } = require("../utils/responseWrapper");
+const {success, error} = require("../utils/responseWrapper");
 const cloudinary = require('cloudinary').v2;
 const {mapPostOutput} = require('../utils/Utils')
-
+const Post = require("../models/Post");
+const User = require("../models/User");
 const createPostController = async (req, res) => {
     try {
-        const { caption, postImg } = req.body;
+        const {caption, postImg} = req.body;
 
-        if(!caption || !postImg) {
+        if (!caption || !postImg) {
             return res.send(error(400, 'Caption and postImg are required'))
         }
         const cloudImg = await cloudinary.uploader.upload(postImg, {
@@ -23,8 +22,8 @@ const createPostController = async (req, res) => {
             owner,
             caption,
             image: {
-                publicId: cloudImg.public_id,
-                url: cloudImg.url
+                url: cloudImg.secure_url,
+                publicId: cloudImg.public_id
             },
         });
 
@@ -34,7 +33,7 @@ const createPostController = async (req, res) => {
         console.log("user", user);
         console.log("post", post);
 
-        return res.json(success(200, { post }));
+        return res.json(success(200, {post}));
     } catch (e) {
         return res.send(error(500, e.message));
     }
@@ -42,22 +41,25 @@ const createPostController = async (req, res) => {
 
 const likeAndUnlikePost = async (req, res) => {
     try {
-        const { postId } = req.body;
+        const {postId} = req.body;
         const curUserId = req._id;
 
         const post = await Post.findById(postId).populate('owner');
         if (!post) {
             return res.send(error(404, "Post not found"));
         }
+        var liked = false;
 
         if (post.likes.includes(curUserId)) {
             const index = post.likes.indexOf(curUserId);
             post.likes.splice(index, 1);
+            liked = false;
         } else {
             post.likes.push(curUserId);
+            liked = true;
         }
         await post.save();
-        return res.send(success(200, {post: mapPostOutput(post, req._id)}));
+        return res.send(success(200, {post: mapPostOutput(post, req._id), liked}));
 
     } catch (e) {
         return res.send(error(500, e.message));
@@ -66,7 +68,7 @@ const likeAndUnlikePost = async (req, res) => {
 
 const updatePostController = async (req, res) => {
     try {
-        const { postId, caption } = req.body;
+        const {postId, caption} = req.body;
         const curUserId = req._id;
 
         const post = await Post.findById(postId);
@@ -83,7 +85,7 @@ const updatePostController = async (req, res) => {
         }
 
         await post.save();
-        return res.send(success(200, { post }));
+        return res.send(success(200, {post}));
     } catch (e) {
         return res.send(error(500, e.message));
     }
@@ -91,7 +93,7 @@ const updatePostController = async (req, res) => {
 
 const deletePost = async (req, res) => {
     try {
-        const { postId } = req.body;
+        const {postId} = req.body;
         const curUserId = req._id;
 
         const post = await Post.findById(postId);

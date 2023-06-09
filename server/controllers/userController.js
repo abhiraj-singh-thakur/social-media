@@ -21,16 +21,16 @@ const followOrUnfollowUserController = async (req, res) => {
             return res.send(error(404, "User to follow not found"));
         }
 
-        if (curUser.followings.includes(userIdToFollow)) {
+        if (curUser.following.includes(userIdToFollow)) {
             // already followed
-            const followingIndex = curUser.followings.indexOf(userIdToFollow);
-            curUser.followings.splice(followingIndex, 1);
+            const followingIndex = curUser.following.indexOf(userIdToFollow);
+            curUser.following.splice(followingIndex, 1);
 
             const followerIndex = userToFollow.followers.indexOf(curUser);
             userToFollow.followers.splice(followerIndex, 1);
         } else {
             userToFollow.followers.push(curUserId);
-            curUser.followings.push(userIdToFollow);
+            curUser.following.push(userIdToFollow);
         }
 
         await userToFollow.save();
@@ -46,11 +46,11 @@ const followOrUnfollowUserController = async (req, res) => {
 const getPostsOfFollowing = async (req, res) => {
     try {
         const curUserId = req._id;
-        const curUser = await User.findById(curUserId).populate("followings");
+        const curUser = await User.findById(curUserId).populate("following");
 
         const fullPosts = await Post.find({
             owner: {
-                $in: curUser.followings,
+                $in: curUser.following,
             },
         }).populate('owner');
 
@@ -58,7 +58,7 @@ const getPostsOfFollowing = async (req, res) => {
             .map((item) => mapPostOutput(item, req._id))
             .reverse();
 
-        const followingsIds = curUser.followings.map((item) => item._id);
+        const followingsIds = curUser.following.map((item) => item._id);
         followingsIds.push(req._id);
 
         const suggestions = await User.find({
@@ -68,7 +68,7 @@ const getPostsOfFollowing = async (req, res) => {
         });
 
         return res.send(success(200, {...curUser._doc, suggestions, posts}));
-    } catch (error) {
+    } catch (e) {
         console.log(e);
         return res.send(error(500, e.message));
     }
@@ -119,13 +119,13 @@ const deleteMyProfile = async (req, res) => {
         // removed myself from followers' followings
         curUser.followers.forEach(async (followerId) => {
             const follower = await User.findById(followerId);
-            const index = follower.followings.indexOf(curUserId);
-            follower.followings.splice(index, 1);
+            const index = follower.following.indexOf(curUserId);
+            follower.following.splice(index, 1);
             await follower.save();
         });
 
         // remove myself from my followings' followers
-        curUser.followings.forEach(async (followingId) => {
+        curUser.following.forEach(async (followingId) => {
             const following = await User.findById(followingId);
             const index = following.followers.indexOf(curUserId);
             following.followers.splice(index, 1);
@@ -158,7 +158,12 @@ const deleteMyProfile = async (req, res) => {
 const getMyInfo = async (req, res) => {
     try {
         const user = await User.findById(req._id);
-        return res.send(success(200, { user }));
+        const posts = await Post.find({
+            owner: req._id,
+        });
+        console.log("user info", { user, posts });
+        console.log("Posts images", posts.map((item) => item.image));
+        return res.send(success(200, "User info", { user }));
     } catch (e) {
         return res.send(error(500, e.message));
     }
@@ -186,9 +191,10 @@ const updateUserProfile = async (req, res) => {
             };
         }
         await user.save();
+        console.log("user updated");
         return res.send(success(200, { user }));
     } catch (e) {
-        console.log('put e', e);
+        console.log(e);
         return res.send(error(500, e.message));
     }
 };

@@ -1,4 +1,5 @@
 var ta = require('time-ago');
+const {model} = require("mongoose");
 
 const mapPostOutput = (post, userId) => {
     return {
@@ -15,6 +16,7 @@ const mapPostOutput = (post, userId) => {
         timeAgo: ta.ago(post.createdAt),
     }
 }
-
-module.exports = mapPostOutput;
+module.exports = {
+    mapPostOutput
+};
 
