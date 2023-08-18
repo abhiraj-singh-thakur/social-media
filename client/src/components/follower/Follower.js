@@ -13,14 +13,14 @@ function Follower({ user }) {
 
     useEffect(() => {
         setIsFollowing(
-            feedData.followings.find((item) => item._id === user._id)
+            feedData.following.find((item) => user._id === item._id)
         );
     }, [feedData]);
 
     function handleUserFollow () {
-        dispatch(followAndUnfollowUser({
-            userIdToFollow: user._id
-        }))
+       dispatch(followAndUnfollowUser({
+           userIdToFollow: user._id
+       }))
     }
 
     return (

@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { axiosClient } from "../../utils/axiosClient";
 import "./Signup.scss";
+import {useNavigate} from "react-router";
 
 function Signup() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -17,9 +19,11 @@ function Signup() {
                 password,
             });
             console.log(result);
+            navigate('/login');
         } catch (error) {
             console.log(error);
         }
+
     }
 
     return (

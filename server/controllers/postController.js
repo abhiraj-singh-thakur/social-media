@@ -91,7 +91,7 @@ const updatePostController = async (req, res) => {
     }
 };
 
-const deletePost = async (req, res) => {
+const deletePostController = async (req, res) => {
     try {
         const {postId} = req.body;
         const curUserId = req._id;
@@ -116,10 +116,37 @@ const deletePost = async (req, res) => {
         return res.send(error(500, e.message));
     }
 };
+const commentPostController = async (req, res) => {
+    try {
+        const {postId, comment} = req.body;
+        if(!comment){
+            return res.send(error(400, "comment is required"));
+        }
+        if(!postId){
+            return res.send(error(400, "postId is required"));
+        }
+        if(!await Post.findById(postId)){
+            return res.send(error(404, "Post not found"));
+        }
+
+        const post = await Post.findByIdAndUpdate(postId, {
+            $push: {comments: {comment, postedBy: req._id}}
+        }, {new: true}).populate('comments.postedBy', '_id name');
+
+        await post.save();
+        return res.send(success(200, "comment added successfully", {post}));
+
+    } catch (e) {
+        console.log(e.message);
+        return res.send(error(500, e.message));
+    }
+}
+
 
 module.exports = {
     createPostController,
     likeAndUnlikePost,
     updatePostController,
-    deletePost
+    deletePostController,
+    commentPostController
 };

@@ -5,6 +5,7 @@ import './Feed.scss'
 import {useSelector, useDispatch} from 'react-redux';
 import { getFeedData } from '../../redux/slices/feedSlice';
 
+
 function Feed() {
 
     const dispatch = useDispatch();
@@ -13,6 +14,7 @@ function Feed() {
     useEffect(() => {
         dispatch(getFeedData());
     }, [dispatch])
+    console.log("feedData:",feedData.suggestions);
 
     return (
         <div className="Feed">
@@ -23,7 +25,7 @@ function Feed() {
                 <div className="right-part">
                     <div className="following">
                         <h3 className="title">You Are Following</h3>
-                        {feedData?.followings?.map(user => <Follower key={user._id} user={user}/>)}
+                        {feedData?.following?.map(user => <Follower key={user._id} user={user}/>)}
                     </div>
                     <div className="suggestions">
                         <h3 className="title">Suggested For You</h3>

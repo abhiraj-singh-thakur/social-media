@@ -25,12 +25,17 @@
     .user-img {
       margin-left: auto;
       margin-right: auto;
-      width: 100px;
-      height: 100px;
+      width: 250px;
+      height: 200px;
       border-radius: 50%;
+    }
+    .user-name {
+      margin-top: 20px;
+      font-size: 21px;
     }
     .bio {
       margin-top: 20px;
+      font-size: 20px;
     }
 
     .username, .follower-info {

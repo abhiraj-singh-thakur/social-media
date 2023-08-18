@@ -33,9 +33,11 @@ function App() {
   useEffect(() => {
     switch (toastData.type) {
       case TOAST_SUCCESS:
+        console.log("toastData", toastData)
         toast.success(toastData.message);
         break;
       case TOAST_FAILURE:
+        console.log("toastData", toastData)
         toast.error(toastData.message);
         break;
     }
@@ -46,7 +48,7 @@ function App() {
         <LoadingBar color="#000" ref={loadingRef} />
         <div>
           <Toaster />
-        </div>
+
         <Routes>
           <Route element={<RequireUser />}>
             <Route element={<Home />}>
@@ -60,6 +62,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
           </Route>
         </Routes>
+        </div>
       </div>
   );
 }

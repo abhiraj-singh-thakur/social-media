@@ -17,7 +17,7 @@ function Profile() {
     const [isMyProfile, setIsMyProfile] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
 
-    console.log("userProfile::", userProfile);
+    // console.log("userProfile::", userProfile);
 
     useEffect(() => {
 
@@ -28,7 +28,7 @@ function Profile() {
         );
         setIsMyProfile(myProfile?._id === params.userId);
         setIsFollowing(
-            feedData?.followings?.find((item) => item._id === params.userId)
+            feedData?.following?.find((item) => item._id === params.userId)
         );
     }, [myProfile, params.userId, feedData]);
 
@@ -58,8 +58,8 @@ function Profile() {
                         <h3 className="user-name">{userProfile?.name}</h3>
                         <p className="bio">{userProfile?.bio}</p>
                         <div className="follower-info">
-                            <h4>{`${userProfile?.followers?.length || 0} Followers`}</h4>
-                            <h4>{`${userProfile?.following?.length || 0} Followings`}</h4>
+                            <h4 className="text-xl"> {`${userProfile?.followers?.length || 0} Followers`}</h4>
+                            <h4 className="text-xl">{`${userProfile?.following?.length || 0} Followings`}</h4>
                         </div>
                         {!isMyProfile && (
                             <h5

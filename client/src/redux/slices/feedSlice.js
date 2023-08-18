@@ -7,8 +7,8 @@ export const getFeedData = createAsyncThunk(
     async () => {
         try {
             const response = await axiosClient.get("/user/getFeedData");
-            console.log("userProfile", response);
-            return response.result;
+            console.log("userProfile", response.message);
+            return response.message;
         } catch (error) {
             return Promise.reject(error);
         }
@@ -20,7 +20,8 @@ export const followAndUnfollowUser = createAsyncThunk(
     async (body) => {
         try {
             const response = await axiosClient.post("/user/follow", body);
-            return response.result.user;
+            console.log("followAndUnfollowUser:", response.message);
+            return response.message.user;
         } catch (error) {
             return Promise.reject(error);
         }
@@ -43,18 +44,19 @@ const feedSlice = createSlice({
                 const index = state?.feedData?.posts?.findIndex(
                     (item) => item._id === post._id
                 );
-                console.log("feed like", post, index);
+                // console.log("feed data:", state.feedData.posts);
+                // console.log("feed like", post, index);
                 if (index !== undefined && index !== -1) {
                     state.feedData.posts[index] = post;
                 }
             })
             .addCase(followAndUnfollowUser.fulfilled, (state, action) => {
                 const user = action.payload;
-                const index = state?.feedData?.followings.findIndex(item => item._id === user._id);
+                const index = state?.feedData?.following.findIndex(item => item._id === user._id);
                 if(index !== -1) {
-                    state?.feedData.followings.splice(index, 1);
+                    state?.feedData.following.splice(index, 1);
                 } else {
-                    state?.feedData.followings.push(user);
+                    state?.feedData.following.push(user);
                 }
             })
     },

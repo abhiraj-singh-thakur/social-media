@@ -18,6 +18,10 @@ const postSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     }],
+   comments: [{
+        comment:{type: String},
+        postedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'user'}
+   }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('post', postSchema);

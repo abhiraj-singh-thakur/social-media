@@ -79,7 +79,7 @@ const getMyPosts = async (req, res) => {
         const curUserId = req._id;
         const allUserPosts = await Post.find({
             owner: curUserId,
-        }).populate("likes");
+        }).populate("likes", "comments");
 
         return res.send(success(200, { allUserPosts }));
     } catch (error) {

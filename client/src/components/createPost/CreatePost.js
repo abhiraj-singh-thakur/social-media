@@ -21,7 +21,7 @@ function CreatePost() {
         fileReader.onload = () => {
             if (fileReader.readyState === fileReader.DONE) {
                 setPostImg(fileReader.result);
-                console.log("img data", fileReader.result);
+                // console.log("img data", fileReader.result);
             }
         };
     };
@@ -42,11 +42,6 @@ function CreatePost() {
             setCaption('');
             setPostImg('');
         }
-
-
-
-
-
     }
 
     return (
