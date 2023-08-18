@@ -1,9 +1,10 @@
-const User = require("../models/User");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const {error, success} = require("../utils/responseWrapper");
 
-const signupController = async (req, res) => {
+import User from "../models/User.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import {error, success} from "../utils/responseWrapper.js";
+
+export const signupController = async (req, res) => {
     try {
         const {name, email, password} = req.body;
 
@@ -32,7 +33,7 @@ const signupController = async (req, res) => {
     }
 };
 
-const loginController = async (req, res) => {
+export const loginController = async (req, res) => {
     try {
         const {email, password} = req.body;
 
@@ -70,7 +71,7 @@ const loginController = async (req, res) => {
     }
 };
 
-const refreshAccessTokenController = async (req, res) => {
+export const refreshAccessTokenController = async (req, res) => {
     try{
         const cookie = req.cookies;
 
@@ -89,7 +90,7 @@ const refreshAccessTokenController = async (req, res) => {
     }
 };
 
-const logoutController = async (req, res) => {
+export const logoutController = async (req, res) => {
     try {
         res.clearCookie('jwt', {
             httpOnly: true,
@@ -121,11 +122,4 @@ const generateRefreshToken = (data) => {
     } catch (error) {
         console.log(error);
     }
-};
-
-module.exports = {
-    signupController,
-    loginController,
-    refreshAccessTokenController,
-    logoutController
 };

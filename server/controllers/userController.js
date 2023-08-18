@@ -1,11 +1,12 @@
-const { json } = require("express");
-const Post = require("../models/Post");
-const User = require("../models/User");
-const { success, error } = require("../utils/responseWrapper");
-const cloudinary = require("cloudinary").v2;
-const { mapPostOutput } = require("../utils/Utils");
+import json from "express";
+import Post from "../models/Post.js";
+import User from "../models/User.js";
+import { success, error } from "../utils/responseWrapper.js";
+import cloudinary from "cloudinary";
+import { mapPostOutput } from "../utils/Utils.js";
 
-const followOrUnfollowUserController = async (req, res) => {
+
+export const followOrUnfollowUserController = async (req, res) => {
     try {
         const { userIdToFollow } = req.body;
         const curUserId = req._id;
@@ -43,7 +44,7 @@ const followOrUnfollowUserController = async (req, res) => {
     }
 };
 
-const getPostsOfFollowing = async (req, res) => {
+export const getPostsOfFollowing = async (req, res) => {
     try {
         const curUserId = req._id;
         const curUser = await User.findById(curUserId).populate("following");
@@ -74,7 +75,7 @@ const getPostsOfFollowing = async (req, res) => {
     }
 };
 
-const getMyPosts = async (req, res) => {
+export const getMyPosts = async (req, res) => {
     try {
         const curUserId = req._id;
         const allUserPosts = await Post.find({
@@ -88,7 +89,7 @@ const getMyPosts = async (req, res) => {
     }
 };
 
-const getUserPosts = async (req, res) => {
+export const getUserPosts = async (req, res) => {
     try {
         const userId = req.body.userId;
         if (!userId) {
@@ -106,7 +107,7 @@ const getUserPosts = async (req, res) => {
     }
 };
 
-const deleteMyProfile = async (req, res) => {
+export const deleteMyProfile = async (req, res) => {
     try {
         const curUserId = req._id;
         const curUser = await User.findById(curUserId);
@@ -155,7 +156,7 @@ const deleteMyProfile = async (req, res) => {
     }
 };
 
-const getMyInfo = async (req, res) => {
+export const getMyInfo = async (req, res) => {
     try {
         const user = await User.findById(req._id);
         const posts = await Post.find({
@@ -169,7 +170,7 @@ const getMyInfo = async (req, res) => {
     }
 };
 
-const updateUserProfile = async (req, res) => {
+export const updateUserProfile = async (req, res) => {
     try {
         const { name, bio, userImg } = req.body;
 
@@ -199,7 +200,7 @@ const updateUserProfile = async (req, res) => {
     }
 };
 
-const getUserProfile = async (req, res) => {
+export const getUserProfile = async (req, res) => {
     try {
         const userId = req.body.userId;
         const user = await User.findById(userId).populate({
@@ -219,15 +220,4 @@ const getUserProfile = async (req, res) => {
         console.log('error put', e);
         return res.send(error(500, e.message));
     }
-};
-
-module.exports = {
-    followOrUnfollowUserController,
-    getPostsOfFollowing,
-    getMyPosts,
-    getUserPosts,
-    deleteMyProfile,
-    getMyInfo,
-    updateUserProfile,
-    getUserProfile,
 };

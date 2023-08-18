@@ -1,9 +1,10 @@
-const {success, error} = require("../utils/responseWrapper");
-const cloudinary = require('cloudinary').v2;
-const {mapPostOutput} = require('../utils/Utils')
-const Post = require("../models/Post");
-const User = require("../models/User");
-const createPostController = async (req, res) => {
+import {success, error} from "../utils/responseWrapper.js";
+import cloudinary from 'cloudinary';
+import {mapPostOutput} from '../utils/Utils.js'
+import Post from "../models/Post.js";
+import User from "../models/User.js";
+
+export const createPostController = async (req, res) => {
     try {
         const {caption, postImg} = req.body;
 
@@ -39,7 +40,7 @@ const createPostController = async (req, res) => {
     }
 };
 
-const likeAndUnlikePost = async (req, res) => {
+export const likeAndUnlikePost = async (req, res) => {
     try {
         const {postId} = req.body;
         const curUserId = req._id;
@@ -66,7 +67,7 @@ const likeAndUnlikePost = async (req, res) => {
     }
 };
 
-const updatePostController = async (req, res) => {
+export const updatePostController = async (req, res) => {
     try {
         const {postId, caption} = req.body;
         const curUserId = req._id;
@@ -91,7 +92,7 @@ const updatePostController = async (req, res) => {
     }
 };
 
-const deletePostController = async (req, res) => {
+export const deletePostController = async (req, res) => {
     try {
         const {postId} = req.body;
         const curUserId = req._id;
@@ -116,7 +117,7 @@ const deletePostController = async (req, res) => {
         return res.send(error(500, e.message));
     }
 };
-const commentPostController = async (req, res) => {
+export const commentPostController = async (req, res) => {
     try {
         const {postId, comment} = req.body;
         if(!comment){
@@ -142,11 +143,3 @@ const commentPostController = async (req, res) => {
     }
 }
 
-
-module.exports = {
-    createPostController,
-    likeAndUnlikePost,
-    updatePostController,
-    deletePostController,
-    commentPostController
-};

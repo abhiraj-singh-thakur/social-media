@@ -1,6 +1,8 @@
-const router = require("express").Router();
-const {createPostController, likeAndUnlikePost, updatePostController, deletePostController, commentPostController} = require("../controllers/postController");
-const requireUser = require("../middlewares/requireUser");
+import express from "express";
+import { createPostController, deletePostController, likeAndUnlikePost, updatePostController, commentPostController } from "../controllers/postController.js";
+import  requireUser  from "../middlewares/requireUser.js";
+
+const router = express.Router();
 
 router.post("/", requireUser, createPostController);
 router.post("/like", requireUser, likeAndUnlikePost);
@@ -8,4 +10,4 @@ router.put('/', requireUser, updatePostController);
 router.put('/comment', requireUser, commentPostController);
 router.delete('/', requireUser, deletePostController);
 
-module.exports = router;
+export default router;

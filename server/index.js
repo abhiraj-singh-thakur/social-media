@@ -1,14 +1,15 @@
-const express = require('express');
-const morgan = require('morgan');
-const dotenv = require('dotenv');
-const cookieParser = require('cookie-parser');
-const cloudinary = require('cloudinary').v2;
-const cors = require('cors');
+import express from 'express';
+import morgan from 'morgan';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import cloudinary from 'cloudinary';
+import cors from 'cors';
 
-const dbConnect = require('./dbConnect');
-const authRouter = require('./routers/authRouter');
-const postRouter = require('./routers/postRouter');
-const userRouter = require('./routers/userRouter');
+
+import dbConnect from './dbConnect.js';
+import authRouter from './routers/authRouter.js';
+import postRouter from './routers/postRouter.js';
+import userRouter from './routers/userRouter.js';
 
 
 const app = express();
@@ -31,7 +32,7 @@ app.use(
 
 // middleware
 app.use(cookieParser());
-app.use(express.json({limit : '50mb'}));
+app.use(express.json({limit: '50mb'}));
 app.use(morgan('common'));
 
 

@@ -1,8 +1,8 @@
-const {error} = require('../utils/responseWrapper');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+import jwt from 'jsonwebtoken';
+import {error} from "../utils/responseWrapper.js";
+import User from "../models/User.js";
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
     if (!req.headers || !req.headers.authorization || !req.headers.authorization.startsWith('Bearer')) {
         return res.send(error(401, 'Authorization header is missing or invalid'));
     }

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const postSchema = new mongoose.Schema({
     owner: {
@@ -24,4 +24,5 @@ const postSchema = new mongoose.Schema({
    }]
 }, { timestamps: true });
 
-module.exports = mongoose.model('post', postSchema);
+const Post= mongoose.model('post', postSchema);
+export default Post;
