@@ -39,28 +39,8 @@ services:
     volumes:
       - ./server:/app/
 
-#    depends_on:
-#      - database
+networks:
+    social-media-network:
 
-#  database:
-#
-#    image: mongo
-#
-#    ports:
-#      - '27017:27017'
-#
-#    container_name: db-container
-#
-#    networks:
-#        - social-media-network
-#
-#    volumes:
-#      - database-data:/data/db
-#
-#    restart: always
-#
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME:
-#      MONGO_INITDB_ROOT_PASSWORD:
 
 
